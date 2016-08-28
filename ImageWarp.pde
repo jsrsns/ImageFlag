@@ -1,4 +1,5 @@
-/* Built with Processing 3.2.1 and Processing.js 1.4.8 */
+/* OpenProcessing Tweak of *@*http://www.openprocessing.org/sketch/170639*@* */
+/* Built with Processing 2.2.1 and Processing.js 1.4.1 */
 /* Controls:
 - click image to randomize the oscilation frequency and amplitude.
 - move the mouse across x and y axis to change the oscilation speed.
@@ -6,12 +7,12 @@
 /* !do not delete the line above, required for linking your tweak if you upload again */
 /* @pjs preload="flag.jpg, flag2.jpg"; */
 
-Boolean isInitialized = false;//loading image
+Boolean isInitialized = false;//JS image loading
 PImage pimg;
 float dw = 0, dh = 0;
 int[] px;
 int imageW, imageH, offset;
-PVector minSize = new PVector(.2, .7);//image min size
+PVector minSize = new PVector(.2, .7);//image min size (width and height)
 PVector freq = new PVector(1, 1);
 
 void setup()
@@ -29,9 +30,9 @@ void initPicture()
   {
     px = new int[imageW*imageH];
     pimg.loadPixels();
-    arrayCopy(pimg.pixels, px);//store the pixels of the image
+    arrayCopy(pimg.pixels, px);//store the image's pixels once and for all
     pimg.updatePixels();
-    offset = (int)((width-imageW)/2 + (height-imageH)/2*width);//centers the image but currently doesn't work with JS ;(
+    offset = (int)((width-imageW)/2 + (height-imageH)/2*width);//in order to center the image but not in JS :'(
     isInitialized = true;
   }
 }
@@ -49,7 +50,7 @@ void draw()
       int w = ((int)(map(1+sin((TWO_PI*j*freq.x)/imageH+dh), 0, 2, minSize.x, 1)*imageW));
       int h = ((int)(map(1+sin((TWO_PI*i*freq.y)/imageW+dw), 0, 2, minSize.y, 1)*imageH));
       if ((imageW-w)/2 <= i && i < (imageW+w)/2
-        && ((imageH-h)/2 <= j && j < (imageH+h)/2))//check pixels in new frame
+        && ((imageH-h)/2 <= j && j < (imageH+h)/2))//check that pixels are within the new frame
       {
         pixels[width*j+i/*+offset*/] = px[imageW*(int)map(j, (imageH-h)/2, (imageH+h)/2-1, 0, imageH-1) + (int)map(i, (imageW-w)/2, (imageW+w)/2-1, 0, imageW-1)];
       }
