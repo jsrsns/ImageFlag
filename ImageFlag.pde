@@ -1,18 +1,17 @@
-/* OpenProcessing Tweak of *@*http://www.openprocessing.org/sketch/170639*@* */
+/* Joes Roosens - 2015 */
 /* Built with Processing 2.2.1 and Processing.js 1.4.1 */
 /* Controls:
-- click image to randomize the oscilation frequency and amplitude.
-- move the mouse across x and y axis to change the oscilation speed.
-- press spacebar to change image. */
-/* !do not delete the line above, required for linking your tweak if you upload again */
+- Click image to randomize the frequency and amplitude of the oscilation.
+- Move the mouse along the y and x axis to change the speed of the oscilation.
+- Press spacebar to change the image. */
 /* @pjs preload="flag.jpg, flag2.jpg"; */
 
-Boolean isInitialized = false;//JS image loading
+Boolean isInitialized = false;//JS load image
 PImage pimg;
 float dw = 0, dh = 0;
 int[] px;
 int imageW, imageH, offset;
-PVector minSize = new PVector(.2, .7);//image min size (width and height)
+PVector minSize = new PVector(.2, .7);//Min image size
 PVector freq = new PVector(1, 1);
 
 void setup()
@@ -30,9 +29,9 @@ void initPicture()
   {
     px = new int[imageW*imageH];
     pimg.loadPixels();
-    arrayCopy(pimg.pixels, px);//store the image's pixels once and for all
+    arrayCopy(pimg.pixels, px);//Store the pixels
     pimg.updatePixels();
-    offset = (int)((width-imageW)/2 + (height-imageH)/2*width);//in order to center the image but not in JS :'(
+    offset = (int)((width-imageW)/2 + (height-imageH)/2*width);//Center image (doesn't work in JS)
     isInitialized = true;
   }
 }
@@ -40,8 +39,8 @@ void initPicture()
 void draw()
 {
   background(255,0);
-  dw += map(mouseX, 0, width, .16, -.16);//oscilation speed
-  dh += map(mouseY, 0, height, .16, -.16);//oscilation speed
+  dw += map(mouseX, 0, width, .16, -.16);//Oscilation speed
+  dh += map(mouseY, 0, height, .16, -.16);//Oscilation speed
   loadPixels();
   for (int i = 0; i < imageW; i++)
   {
@@ -50,7 +49,7 @@ void draw()
       int w = ((int)(map(1+sin((TWO_PI*j*freq.x)/imageH+dh), 0, 2, minSize.x, 1)*imageW));
       int h = ((int)(map(1+sin((TWO_PI*i*freq.y)/imageW+dw), 0, 2, minSize.y, 1)*imageH));
       if ((imageW-w)/2 <= i && i < (imageW+w)/2
-        && ((imageH-h)/2 <= j && j < (imageH+h)/2))//check that pixels are within the new frame
+        && ((imageH-h)/2 <= j && j < (imageH+h)/2))//Check pixels
       {
         pixels[width*j+i/*+offset*/] = px[imageW*(int)map(j, (imageH-h)/2, (imageH+h)/2-1, 0, imageH-1) + (int)map(i, (imageW-w)/2, (imageW+w)/2-1, 0, imageW-1)];
       }
