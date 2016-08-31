@@ -16,7 +16,7 @@ PVector freq = new PVector(1, 1);
 
 void setup()
 {
-  size(700, 700, P2D);
+  size(500, 700, P2D);
   pimg = loadImage("flag.jpg");
   initPicture();
 }
